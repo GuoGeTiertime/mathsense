@@ -1,0 +1,316 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --bg: #0b0c0f;
+  --card: rgba(255, 255, 255, 0.06);
+  --text: #f3f4f6;
+  --muted: rgba(243, 244, 246, 0.7);
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #60a5fa;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --text: #111827;
+    --muted: rgba(17, 24, 39, 0.65);
+    --border: rgba(17, 24, 39, 0.12);
+    --accent: #2563eb;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.appShell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  background: color-mix(in oklab, var(--bg) 82%, transparent);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.topBarTitle {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+
+.linkBtn {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 600;
+  padding: 8px 10px;
+}
+
+.page {
+  padding: 14px;
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.pill {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.bigBtn {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 14px;
+  background: color-mix(in oklab, var(--accent) 18%, var(--card));
+  color: var(--text);
+  font-weight: 750;
+  font-size: 16px;
+}
+
+.ghostBtn {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 10px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 650;
+}
+
+.questionCard {
+  padding: 18px 14px;
+}
+
+.questionText {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 34px;
+  letter-spacing: 0.4px;
+}
+
+.qAns {
+  min-width: 2ch;
+  text-align: center;
+  color: var(--accent);
+}
+
+.inputPreview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputLabel {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.inputValue {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.keypad {
+  margin-top: 2px;
+}
+
+.keypadGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.keyBtn {
+  min-height: 52px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.keyAlt {
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.keyPrimary {
+  background: color-mix(in oklab, var(--accent) 28%, var(--card));
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldLabel {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.input {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 12px 12px;
+  background: transparent;
+  color: var(--text);
+  font-size: 16px;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.chips {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.chip {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  padding: 10px 10px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.chipActive {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.stat {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.statLabel {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.statValue {
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+.summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.attemptList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.attemptRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.attemptRow:last-child {
+  border-bottom: 0;
+}
+
+.attemptQ {
+  font-weight: 700;
+}
+
+.ok {
+  color: #34d399;
+  font-weight: 750;
+}
+
+.bad {
+  color: #fb7185;
+  font-weight: 750;
+}
