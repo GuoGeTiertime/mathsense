@@ -1,7 +1,13 @@
 import type { AppSettings, Op } from '../shared/types'
+import { useEffect, useState } from 'react'
 
 export function Settings(props: { settings: AppSettings; onChange: (next: AppSettings) => void }) {
   const s = props.settings
+  const [rangeMaxText, setRangeMaxText] = useState(() => String(s.rangeMax))
+  const [questionsPerRoundText, setQuestionsPerRoundText] = useState(() => String(s.questionsPerRound))
+
+  useEffect(() => setRangeMaxText(String(s.rangeMax)), [s.rangeMax])
+  useEffect(() => setQuestionsPerRoundText(String(s.questionsPerRound)), [s.questionsPerRound])
 
   function toggleOp(op: Op) {
     const has = s.ops.includes(op)
@@ -25,8 +31,16 @@ export function Settings(props: { settings: AppSettings; onChange: (next: AppSet
             inputMode="numeric"
             min={10}
             max={100}
-            value={s.rangeMax}
-            onChange={(e) => props.onChange({ ...s, rangeMax: clampInt(e.target.value, 10, 100) })}
+            value={rangeMaxText}
+            onChange={(e) => setRangeMaxText(e.target.value)}
+            onBlur={() => {
+              const next = clampInt(rangeMaxText, 10, 100)
+              setRangeMaxText(String(next))
+              if (next !== s.rangeMax) props.onChange({ ...s, rangeMax: next })
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur()
+            }}
           />
         </label>
 
@@ -38,8 +52,16 @@ export function Settings(props: { settings: AppSettings; onChange: (next: AppSet
             inputMode="numeric"
             min={5}
             max={50}
-            value={s.questionsPerRound}
-            onChange={(e) => props.onChange({ ...s, questionsPerRound: clampInt(e.target.value, 5, 50) })}
+            value={questionsPerRoundText}
+            onChange={(e) => setQuestionsPerRoundText(e.target.value)}
+            onBlur={() => {
+              const next = clampInt(questionsPerRoundText, 5, 50)
+              setQuestionsPerRoundText(String(next))
+              if (next !== s.questionsPerRound) props.onChange({ ...s, questionsPerRound: next })
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur()
+            }}
           />
         </label>
 
