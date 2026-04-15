@@ -1,5 +1,6 @@
 export function Home(props: {
   onStartDirect: () => void
+  onStartMakeTarget: () => void
   onStats: () => void
   onWrongBook: () => void
   onSettings: () => void
@@ -13,6 +14,10 @@ export function Home(props: {
 
       <button className="bigBtn" onClick={props.onStartDirect}>
         开始：直接计算
+      </button>
+
+      <button className="bigBtn" onClick={props.onStartMakeTarget}>
+        开始：凑数练习（凑10/20/100）
       </button>
 
       <div className="row">

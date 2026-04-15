@@ -166,6 +166,13 @@ body {
   align-items: center;
 }
 
+.stepCurrent {
+  border-radius: 12px;
+  padding: 10px 10px;
+  background: color-mix(in oklab, #34d399 18%, transparent);
+  border: 1px solid color-mix(in oklab, #34d399 40%, var(--border));
+}
+
 .inputLabel {
   color: var(--muted);
   font-size: 13px;

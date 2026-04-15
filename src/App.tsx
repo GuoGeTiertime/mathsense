@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { createQuestion } from './features/generator/createQuestion'
+import { createMakeTargetQuestion, createQuestion } from './features/generator/createQuestion'
 import { Practice } from './features/practice/Practice'
 import { Result } from './pages/Result'
 import { Home } from './pages/Home'
@@ -14,6 +14,7 @@ const storage = new LocalStorageProvider()
 type View =
   | { name: 'home' }
   | { name: 'practice'; mode: PracticeMode }
+  | { name: 'practiceMakeTarget' }
   | { name: 'result'; result: SessionResult }
   | { name: 'stats' }
   | { name: 'wrongBook' }
@@ -31,6 +32,8 @@ export function App() {
           ? view.mode === 'direct'
             ? '直接计算'
             : '策略训练'
+          : view.name === 'practiceMakeTarget'
+            ? '凑数练习'
           : view.name === 'result'
             ? '本轮结果'
             : view.name === 'stats'
@@ -58,6 +61,7 @@ export function App() {
         {view.name === 'home' && (
           <Home
             onStartDirect={() => setView({ name: 'practice', mode: 'direct' })}
+            onStartMakeTarget={() => setView({ name: 'practiceMakeTarget' })}
             onStats={() => setView({ name: 'stats' })}
             onWrongBook={() => setView({ name: 'wrongBook' })}
             onSettings={() => setView({ name: 'settings' })}
@@ -70,6 +74,16 @@ export function App() {
             settings={settings}
             storage={storage}
             createQuestion={() => createQuestion(settings)}
+            onFinish={(result) => setView({ name: 'result', result })}
+          />
+        )}
+
+        {view.name === 'practiceMakeTarget' && (
+          <Practice
+            mode="strategy"
+            settings={settings}
+            storage={storage}
+            createQuestion={() => createMakeTargetQuestion(settings)}
             onFinish={(result) => setView({ name: 'result', result })}
           />
         )}

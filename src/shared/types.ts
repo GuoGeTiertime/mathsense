@@ -17,6 +17,10 @@ export interface Question {
   a: number
   b: number
   answer: number
+
+  strategy?: 'makeTarget'
+  strategyTarget?: 10 | 20 | 100
+  expectedSteps?: { x: number; y: number; result: number }
 }
 
 export interface AttemptRecord {
