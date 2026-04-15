@@ -12,6 +12,7 @@ export function Practice(props: {
   onFinish: (result: SessionResult) => void
 }) {
   const total = Math.max(1, Math.floor(props.settings.questionsPerRound))
+  const correctAdvanceDelayMs = 80
 
   const [index, setIndex] = useState(0)
   const [question, setQuestion] = useState<Question>(() => props.createQuestion())
@@ -32,6 +33,15 @@ export function Practice(props: {
     setAttempts([])
   }, [props.settings, props.mode, props.createQuestion])
 
+  useEffect(() => {
+    if (feedback !== 'idle') return
+    const v = input.trim()
+    if (!v) return
+    const n = Number(v)
+    if (!Number.isFinite(n)) return
+    if (n === question.answer) doSubmit()
+  }, [input, feedback, question.answer])
+
   const progressText = useMemo(() => `${index + 1} / ${total}`, [index, total])
 
   function next() {
@@ -42,7 +52,7 @@ export function Practice(props: {
   }
 
   function doSubmit() {
-    if (feedback !== 'idle') return
+    if (feedback === 'correct') return
     if (!input.trim()) return
 
     const userAnswer = Number(input)
@@ -64,6 +74,11 @@ export function Practice(props: {
     setAttempts((prev) => [...prev, attempt])
     setFeedback(correct ? 'correct' : 'wrong')
 
+    if (!correct) {
+      setInput('')
+      return
+    }
+
     const isLast = index + 1 >= total
     window.setTimeout(() => {
       if (isLast) {
@@ -73,7 +88,7 @@ export function Practice(props: {
         startedAtRef.current = Date.now()
         next()
       }
-    }, 650)
+    }, correctAdvanceDelayMs)
   }
 
   return (
@@ -83,7 +98,7 @@ export function Practice(props: {
         <div className="pill">{feedback === 'idle' ? '作答中' : feedback === 'correct' ? '正确' : '再想想'}</div>
       </div>
 
-      <div className="card questionCard">
+      <div className={feedback === 'wrong' ? 'card questionCard questionCardWrong' : 'card questionCard'}>
         <div className="questionText" aria-live="polite">
           <span className="qNum">{question.a}</span>
           <span className="qOp">{formatOp(question.op)}</span>
@@ -102,10 +117,16 @@ export function Practice(props: {
 
       <Keypad
         value={input}
-        onChange={setInput}
-        onBackspace={() => setInput((v) => v.slice(0, -1))}
+        onChange={(v) => {
+          setInput(v)
+          if (feedback === 'wrong') setFeedback('idle')
+        }}
+        onBackspace={() => {
+          setInput((v) => v.slice(0, -1))
+          if (feedback === 'wrong') setFeedback('idle')
+        }}
         onSubmit={doSubmit}
-        disabled={feedback !== 'idle'}
+        disabled={feedback === 'correct'}
       />
     </div>
   )

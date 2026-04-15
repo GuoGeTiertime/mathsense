@@ -139,6 +139,11 @@ body {
   padding: 18px 14px;
 }
 
+.questionCardWrong {
+  border-color: color-mix(in oklab, #fb7185 55%, var(--border));
+  background: color-mix(in oklab, #fb7185 14%, var(--card));
+}
+
 .questionText {
   display: flex;
   align-items: baseline;
