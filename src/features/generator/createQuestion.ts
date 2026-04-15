@@ -3,10 +3,12 @@ import type { AppSettings, Op, Question } from '../../shared/types'
 export function createQuestion(settings: AppSettings): Question {
   const op = pick(settings.ops)
   const max = Math.max(1, Math.floor(settings.rangeMax))
+  const min = settings.allowZero ? 0 : 2
 
   for (let i = 0; i < 200; i++) {
-    const a = randInt(settings.allowZero ? 0 : 1, max)
-    const b = randInt(settings.allowZero ? 0 : 1, max)
+    const a = randInt(min, max)
+    const b = randInt(min, max)
+    if (a === 1 || b === 1) continue
     const q = build(op, a, b, settings)
     if (q) return q
   }
