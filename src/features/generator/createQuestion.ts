@@ -141,6 +141,14 @@ export function createMakeSumTargetQuestion(settings: AppSettings): Question {
   }
 }
 
+export function createMixedQuestion(settings: AppSettings): Question {
+  const r = Math.random()
+  if (r < 0.4) return createQuestion(settings)
+  if (r < 0.6) return createMakeTargetQuestion(settings)
+  if (r < 0.8) return createEstimateQuestion(settings)
+  return createMakeSumTargetQuestion(settings)
+}
+
 function build(op: Op, a: number, b: number, settings: AppSettings): Question | null {
   switch (op) {
     case 'add': {

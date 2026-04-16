@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import {
   createEstimateQuestion,
+  createMixedQuestion,
   createMakeSumTargetQuestion,
   createMakeTargetQuestion,
   createQuestion,
@@ -22,6 +23,7 @@ type View =
   | { name: 'practiceMakeTarget' }
   | { name: 'practiceEstimate' }
   | { name: 'practiceMakeSumTarget' }
+  | { name: 'practiceMixed' }
   | { name: 'result'; result: SessionResult }
   | { name: 'stats' }
   | { name: 'wrongBook' }
@@ -45,6 +47,8 @@ export function App() {
             ? '估算练习'
           : view.name === 'practiceMakeSumTarget'
             ? '补数练习'
+          : view.name === 'practiceMixed'
+            ? '混合练习'
           : view.name === 'result'
             ? '本轮结果'
             : view.name === 'stats'
@@ -75,6 +79,7 @@ export function App() {
             onStartMakeTarget={() => setView({ name: 'practiceMakeTarget' })}
             onStartEstimate={() => setView({ name: 'practiceEstimate' })}
             onStartMakeSumTarget={() => setView({ name: 'practiceMakeSumTarget' })}
+            onStartMixed={() => setView({ name: 'practiceMixed' })}
             onStats={() => setView({ name: 'stats' })}
             onWrongBook={() => setView({ name: 'wrongBook' })}
             onSettings={() => setView({ name: 'settings' })}
@@ -117,6 +122,16 @@ export function App() {
             settings={settings}
             storage={storage}
             createQuestion={() => createMakeSumTargetQuestion(settings)}
+            onFinish={(result) => setView({ name: 'result', result })}
+          />
+        )}
+
+        {view.name === 'practiceMixed' && (
+          <Practice
+            mode="strategy"
+            settings={settings}
+            storage={storage}
+            createQuestion={() => createMixedQuestion(settings)}
             onFinish={(result) => setView({ name: 'result', result })}
           />
         )}

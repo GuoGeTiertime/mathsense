@@ -3,6 +3,7 @@ export function Home(props: {
   onStartMakeTarget: () => void
   onStartEstimate: () => void
   onStartMakeSumTarget: () => void
+  onStartMixed: () => void
   onStats: () => void
   onWrongBook: () => void
   onSettings: () => void
@@ -28,6 +29,10 @@ export function Home(props: {
 
       <button className="bigBtn" onClick={props.onStartMakeSumTarget}>
         开始：补数练习（凑10/20/50/100）
+      </button>
+
+      <button className="bigBtn" onClick={props.onStartMixed}>
+        开始：混合练习（全部题型）
       </button>
 
       <div className="row">
