@@ -56,6 +56,7 @@ export function Practice(props: {
     if (!v) return
     const n = Number(v)
     if (!Number.isFinite(n)) return
+    if (question.strategy === 'estimate') return
     if (question.strategy === 'makeTarget') {
       const expected = currentExpectedMakeValue()
       if (typeof expected === 'number' && n === expected) doSubmit()
@@ -97,11 +98,11 @@ export function Practice(props: {
     }
   }
 
-  function doSubmit() {
+  function doSubmit(overrideAnswer?: number) {
     if (feedback === 'correct') return
-    if (!input.trim()) return
+    if (overrideAnswer === undefined && !input.trim()) return
 
-    const userAnswer = Number(input)
+    const userAnswer = overrideAnswer ?? Number(input)
     if (!Number.isFinite(userAnswer)) return
 
     const answeredAt = Date.now()
@@ -189,11 +190,26 @@ export function Practice(props: {
 
       <div className={feedback === 'wrong' ? 'card questionCard questionCardWrong' : 'card questionCard'}>
         <div className="questionText" aria-live="polite">
-          <span className="qNum">{question.a}</span>
-          <span className="qOp">{formatOp(question.op)}</span>
-          <span className="qNum">{question.b}</span>
-          <span className="qEq">=</span>
-          <span className="qAns">{input || '？'}</span>
+          {question.strategy === 'makeSumTarget' ? (
+            <>
+              <span className="qNum">{question.a}</span>
+              <span className="qOp">+</span>
+              <span className="qNum">□</span>
+              <span className="qEq">=</span>
+              <span className="qNum">{question.b}</span>
+              <span className="qAns" style={{ marginLeft: 10 }}>
+                {input || '？'}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="qNum">{question.a}</span>
+              <span className="qOp">{formatOp(question.op)}</span>
+              <span className="qNum">{question.b}</span>
+              <span className="qEq">=</span>
+              <span className="qAns">{input || '？'}</span>
+            </>
+          )}
         </div>
       </div>
 
@@ -228,19 +244,38 @@ export function Practice(props: {
         </div>
       </div>
 
-      <Keypad
-        value={input}
-        onChange={(v) => {
-          setInput(v)
-          if (feedback === 'wrong') setFeedback('idle')
-        }}
-        onBackspace={() => {
-          setInput((v) => v.slice(0, -1))
-          if (feedback === 'wrong') setFeedback('idle')
-        }}
-        onSubmit={doSubmit}
-        disabled={feedback === 'correct'}
-      />
+      {question.strategy === 'estimate' && question.choices?.length === 3 ? (
+        <div className="stack" style={{ gap: 10 }}>
+          {question.choices.map((c) => (
+            <button
+              key={c}
+              className="bigBtn"
+              disabled={feedback === 'correct'}
+              onClick={() => {
+                setInput(String(c))
+                if (feedback === 'wrong') setFeedback('idle')
+                doSubmit(c)
+              }}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <Keypad
+          value={input}
+          onChange={(v) => {
+            setInput(v)
+            if (feedback === 'wrong') setFeedback('idle')
+          }}
+          onBackspace={() => {
+            setInput((v) => v.slice(0, -1))
+            if (feedback === 'wrong') setFeedback('idle')
+          }}
+          onSubmit={doSubmit}
+          disabled={feedback === 'correct'}
+        />
+      )}
     </div>
   )
 }

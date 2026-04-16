@@ -1,5 +1,10 @@
 import { useMemo, useState } from 'react'
-import { createMakeTargetQuestion, createQuestion } from './features/generator/createQuestion'
+import {
+  createEstimateQuestion,
+  createMakeSumTargetQuestion,
+  createMakeTargetQuestion,
+  createQuestion,
+} from './features/generator/createQuestion'
 import { Practice } from './features/practice/Practice'
 import { Result } from './pages/Result'
 import { Home } from './pages/Home'
@@ -15,6 +20,8 @@ type View =
   | { name: 'home' }
   | { name: 'practice'; mode: PracticeMode }
   | { name: 'practiceMakeTarget' }
+  | { name: 'practiceEstimate' }
+  | { name: 'practiceMakeSumTarget' }
   | { name: 'result'; result: SessionResult }
   | { name: 'stats' }
   | { name: 'wrongBook' }
@@ -34,6 +41,10 @@ export function App() {
             : '策略训练'
           : view.name === 'practiceMakeTarget'
             ? '凑数练习'
+          : view.name === 'practiceEstimate'
+            ? '估算练习'
+          : view.name === 'practiceMakeSumTarget'
+            ? '补数练习'
           : view.name === 'result'
             ? '本轮结果'
             : view.name === 'stats'
@@ -62,6 +73,8 @@ export function App() {
           <Home
             onStartDirect={() => setView({ name: 'practice', mode: 'direct' })}
             onStartMakeTarget={() => setView({ name: 'practiceMakeTarget' })}
+            onStartEstimate={() => setView({ name: 'practiceEstimate' })}
+            onStartMakeSumTarget={() => setView({ name: 'practiceMakeSumTarget' })}
             onStats={() => setView({ name: 'stats' })}
             onWrongBook={() => setView({ name: 'wrongBook' })}
             onSettings={() => setView({ name: 'settings' })}
@@ -84,6 +97,26 @@ export function App() {
             settings={settings}
             storage={storage}
             createQuestion={() => createMakeTargetQuestion(settings)}
+            onFinish={(result) => setView({ name: 'result', result })}
+          />
+        )}
+
+        {view.name === 'practiceEstimate' && (
+          <Practice
+            mode="strategy"
+            settings={settings}
+            storage={storage}
+            createQuestion={() => createEstimateQuestion(settings)}
+            onFinish={(result) => setView({ name: 'result', result })}
+          />
+        )}
+
+        {view.name === 'practiceMakeSumTarget' && (
+          <Practice
+            mode="strategy"
+            settings={settings}
+            storage={storage}
+            createQuestion={() => createMakeSumTargetQuestion(settings)}
             onFinish={(result) => setView({ name: 'result', result })}
           />
         )}
