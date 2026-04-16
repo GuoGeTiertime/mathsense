@@ -190,7 +190,46 @@ export function Practice(props: {
 
       <div className={feedback === 'wrong' ? 'card questionCard questionCardWrong' : 'card questionCard'}>
         <div className="questionText" aria-live="polite">
-          {question.strategy === 'makeSumTarget' ? (
+          {question.strategy === 'makeTarget' ? (
+            <>
+              <span className="qNum">{question.a}</span>
+              <span className="qOp">+</span>
+              <span className="qNum">{question.b}</span>
+              <span className="qEq">=</span>
+
+              {makeStep === 0 ? (
+                <>
+                  <span className="qNum">(</span>
+                  <span className="qNum">{question.a}</span>
+                  <span className="qOp">+</span>
+                  <span className="qAns">{input || 'x'}</span>
+                  <span className="qNum">)</span>
+                  <span className="qOp">+</span>
+                  <span className="qNum">y</span>
+                </>
+              ) : makeStep === 1 ? (
+                <>
+                  <span className="qNum">{question.a}</span>
+                  <span className="qOp">+</span>
+                  <span className="qNum">(</span>
+                  <span className="qNum">{makeX || 'x'}</span>
+                  <span className="qOp">+</span>
+                  <span className="qAns">{input || 'y'}</span>
+                  <span className="qNum">)</span>
+                </>
+              ) : (
+                <>
+                  <span className="qNum">(</span>
+                  <span className="qNum">{question.a}</span>
+                  <span className="qOp">+</span>
+                  <span className="qNum">{makeX || 'x'}</span>
+                  <span className="qNum">)</span>
+                  <span className="qOp">+</span>
+                  <span className="qNum">{makeY || 'y'}</span>
+                </>
+              )}
+            </>
+          ) : question.strategy === 'makeSumTarget' ? (
             <>
               <span className="qNum">{question.a}</span>
               <span className="qOp">+</span>
