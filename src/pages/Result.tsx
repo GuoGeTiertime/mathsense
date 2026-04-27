@@ -62,7 +62,7 @@ function op(x: SessionResult['attempts'][number]['question']['op']) {
 function formatAttemptQuestion(q: SessionResult['attempts'][number]['question']) {
   if (q.strategy === 'makeSumTarget') {
     // 补数：a + (答案) = 目标(b)
-    return `${q.a} + ${q.answer} = ${q.b}`
+    return `${q.a} + (${q.answer}) = ${q.b}`
   }
   return `${q.a} ${op(q.op)} ${q.b} = ${q.answer}`
 }
