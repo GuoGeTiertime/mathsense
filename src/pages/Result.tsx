@@ -35,7 +35,7 @@ export function Result(props: { result: SessionResult; onRetry: () => void; onHo
           {result.attempts.map((a) => (
             <div key={a.id} className="attemptRow">
               <div className="attemptQ">
-                {a.question.a} {op(a.question.op)} {a.question.b} = {a.question.answer}
+                {formatAttemptQuestion(a.question)}
               </div>
               <div className={a.correct ? 'ok' : 'bad'}>你答：{a.userAnswer}</div>
             </div>
@@ -57,5 +57,13 @@ function op(x: SessionResult['attempts'][number]['question']['op']) {
     case 'div':
       return '÷'
   }
+}
+
+function formatAttemptQuestion(q: SessionResult['attempts'][number]['question']) {
+  if (q.strategy === 'makeSumTarget') {
+    // 补数：a + (答案) = 目标(b)
+    return `${q.a} + ${q.answer} = ${q.b}`
+  }
+  return `${q.a} ${op(q.op)} ${q.b} = ${q.answer}`
 }
 

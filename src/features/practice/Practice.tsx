@@ -66,6 +66,7 @@ export function Practice(props: {
   }, [input, feedback, makeStep, question.answer, question.expectedSteps, question.strategy])
 
   const progressText = useMemo(() => `${index + 1} / ${total}`, [index, total])
+  const eqText = question.strategy === 'estimate' ? '≈' : '='
 
   function next() {
     setIndex((v) => v + 1)
@@ -233,19 +234,16 @@ export function Practice(props: {
             <>
               <span className="qNum">{question.a}</span>
               <span className="qOp">+</span>
-              <span className="qNum">□</span>
-              <span className="qEq">=</span>
+              <span className="qAns">{input || '□'}</span>
+              <span className="qEq">{eqText}</span>
               <span className="qNum">{question.b}</span>
-              <span className="qAns" style={{ marginLeft: 10 }}>
-                {input || '？'}
-              </span>
             </>
           ) : (
             <>
               <span className="qNum">{question.a}</span>
               <span className="qOp">{formatOp(question.op)}</span>
               <span className="qNum">{question.b}</span>
-              <span className="qEq">=</span>
+              <span className="qEq">{eqText}</span>
               <span className="qAns">{input || '？'}</span>
             </>
           )}

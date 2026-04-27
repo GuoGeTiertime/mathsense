@@ -18,7 +18,9 @@ export function WrongBook(props: { storage: StorageProvider; onStartWrong: () =>
           {attempts.map((a) => (
             <div key={a.id} className="attemptRow">
               <div className="attemptQ">
-                {a.question.a} {formatOp(a.question.op)} {a.question.b} = {a.question.answer}
+                {a.question.strategy === 'makeSumTarget'
+                  ? `${a.question.a} + ${a.question.answer} = ${a.question.b}`
+                  : `${a.question.a} ${formatOp(a.question.op)} ${a.question.b} = ${a.question.answer}`}
               </div>
               <div className="bad">你答：{a.userAnswer}</div>
             </div>
