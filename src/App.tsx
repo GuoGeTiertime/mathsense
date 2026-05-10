@@ -13,6 +13,7 @@ import { Settings } from './pages/Settings'
 import { Stats } from './pages/Stats'
 import { WrongBook } from './pages/WrongBook'
 import { LocalStorageProvider } from './storage/localStorageProvider'
+import type { LifetimeTotals } from './storage/storageProvider'
 import type { AppSettings, PracticeMode, SessionResult } from './shared/types'
 
 const storage = new LocalStorageProvider()
@@ -24,7 +25,7 @@ type View =
   | { name: 'practiceEstimate' }
   | { name: 'practiceMakeSumTarget' }
   | { name: 'practiceMixed' }
-  | { name: 'result'; result: SessionResult }
+  | { name: 'result'; result: SessionResult; lifetime: LifetimeTotals }
   | { name: 'stats' }
   | { name: 'wrongBook' }
   | { name: 'settings' }
@@ -32,6 +33,11 @@ type View =
 export function App() {
   const [settings, setSettings] = useState<AppSettings>(() => storage.loadSettings() ?? defaultSettings)
   const [view, setView] = useState<View>({ name: 'home' })
+
+  function finishPractice(result: SessionResult) {
+    storage.recordSessionFinish(result.total, result.correct)
+    setView({ name: 'result', result, lifetime: storage.getLifetimeTotals() })
+  }
 
   const header = useMemo(() => {
     const title =
@@ -92,7 +98,7 @@ export function App() {
             settings={settings}
             storage={storage}
             createQuestion={() => createQuestion(settings)}
-            onFinish={(result) => setView({ name: 'result', result })}
+            onFinish={finishPractice}
           />
         )}
 
@@ -102,7 +108,7 @@ export function App() {
             settings={settings}
             storage={storage}
             createQuestion={() => createMakeTargetQuestion(settings)}
-            onFinish={(result) => setView({ name: 'result', result })}
+            onFinish={finishPractice}
           />
         )}
 
@@ -112,7 +118,7 @@ export function App() {
             settings={settings}
             storage={storage}
             createQuestion={() => createEstimateQuestion(settings)}
-            onFinish={(result) => setView({ name: 'result', result })}
+            onFinish={finishPractice}
           />
         )}
 
@@ -122,7 +128,7 @@ export function App() {
             settings={settings}
             storage={storage}
             createQuestion={() => createMakeSumTargetQuestion(settings)}
-            onFinish={(result) => setView({ name: 'result', result })}
+            onFinish={finishPractice}
           />
         )}
 
@@ -132,13 +138,14 @@ export function App() {
             settings={settings}
             storage={storage}
             createQuestion={() => createMixedQuestion(settings)}
-            onFinish={(result) => setView({ name: 'result', result })}
+            onFinish={finishPractice}
           />
         )}
 
         {view.name === 'result' && (
           <Result
             result={view.result}
+            lifetime={view.lifetime}
             onRetry={() => setView({ name: 'practice', mode: 'direct' })}
             onHome={() => setView({ name: 'home' })}
           />

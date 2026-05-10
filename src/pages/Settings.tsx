@@ -51,11 +51,11 @@ export function Settings(props: { settings: AppSettings; onChange: (next: AppSet
             type="number"
             inputMode="numeric"
             min={5}
-            max={50}
+            max={100}
             value={questionsPerRoundText}
             onChange={(e) => setQuestionsPerRoundText(e.target.value)}
             onBlur={() => {
-              const next = clampInt(questionsPerRoundText, 5, 50)
+              const next = clampInt(questionsPerRoundText, 5, 100)
               setQuestionsPerRoundText(String(next))
               if (next !== s.questionsPerRound) props.onChange({ ...s, questionsPerRound: next })
             }}

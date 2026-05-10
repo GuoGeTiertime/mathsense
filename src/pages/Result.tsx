@@ -1,22 +1,51 @@
+import type { LifetimeTotals } from '../storage/storageProvider'
 import type { SessionResult } from '../shared/types'
 
-export function Result(props: { result: SessionResult; onRetry: () => void; onHome: () => void }) {
-  const { result } = props
+export function Result(props: {
+  result: SessionResult
+  lifetime: LifetimeTotals
+  onRetry: () => void
+  onHome: () => void
+}) {
+  const { result, lifetime } = props
+  const wrong = Math.max(0, result.total - result.correct)
+  const sessionRate =
+    result.total === 0 ? '—' : `${Math.round((result.correct / result.total) * 100)}%`
+  const lifetimeRate =
+    lifetime.questions === 0 ? '—' : `${Math.round((lifetime.correct / lifetime.questions) * 100)}%`
+
   return (
     <div className="stack">
       <div className="card">
         <div className="title">完成！</div>
         <div className="statsGrid">
           <div className="stat">
-            <div className="statLabel">正确</div>
-            <div className="statValue">
-              {result.correct} / {result.total}
-            </div>
+            <div className="statLabel">本组正确</div>
+            <div className="statValue">{result.correct}</div>
           </div>
           <div className="stat">
-            <div className="statLabel">平均用时</div>
-            <div className="statValue">{Math.round(result.avgMs / 100) / 10}s</div>
+            <div className="statLabel">本组错误</div>
+            <div className="statValue">{wrong}</div>
           </div>
+          <div className="stat">
+            <div className="statLabel">本组题数</div>
+            <div className="statValue">{result.total}</div>
+          </div>
+          <div className="stat">
+            <div className="statLabel">本组正确率</div>
+            <div className="statValue">{sessionRate}</div>
+          </div>
+          <div className="stat">
+            <div className="statLabel">累计做题</div>
+            <div className="statValue">{lifetime.questions}</div>
+          </div>
+          <div className="stat">
+            <div className="statLabel">累计正确率</div>
+            <div className="statValue">{lifetimeRate}</div>
+          </div>
+        </div>
+        <div className="muted resultAvgNote">
+          平均用时：{result.total === 0 ? '—' : `${Math.round(result.avgMs / 100) / 10}s`}
         </div>
       </div>
 

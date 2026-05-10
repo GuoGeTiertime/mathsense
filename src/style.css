@@ -72,6 +72,16 @@ body {
   box-sizing: border-box;
 }
 
+.practice {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.practice > .row {
+  gap: 12px;
+}
+
 .stack {
   display: flex;
   flex-direction: column;
@@ -183,10 +193,6 @@ body {
   font-size: 18px;
 }
 
-.keypad {
-  margin-top: 2px;
-}
-
 .keypadGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -194,7 +200,7 @@ body {
 }
 
 .keyBtn {
-  min-height: 52px;
+  min-height: calc(52px * 1.3);
   border-radius: 14px;
   border: 1px solid var(--border);
   background: var(--card);
@@ -286,6 +292,10 @@ body {
 .statValue {
   font-weight: 800;
   margin-top: 6px;
+}
+
+.resultAvgNote {
+  margin-top: 10px;
 }
 
 .summary {

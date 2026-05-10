@@ -252,24 +252,26 @@ export function Practice(props: {
 
       {question.strategy === 'makeTarget' && (
         <div className="card">
-          <div className="fieldLabel">凑数步骤（按顺序输入）</div>
-          <div className={makeStep === 0 ? 'inputPreview stepCurrent' : 'inputPreview'}>
-            <div className="inputLabel">
-              ① 凑到 {question.strategyTarget}：{question.a} + X = {question.strategyTarget} {makeStep === 0 ? '（当前）' : ''}
+          <div className="stack">
+            <div className="fieldLabel">凑数步骤（按顺序输入）</div>
+            <div className={makeStep === 0 ? 'inputPreview stepCurrent' : 'inputPreview'}>
+              <div className="inputLabel">
+                ① 凑到 {question.strategyTarget}：{question.a} + X = {question.strategyTarget} {makeStep === 0 ? '（当前）' : ''}
+              </div>
+              <div className="inputValue">X = {makeStep === 0 ? input || '？' : makeX || '？'}</div>
             </div>
-            <div className="inputValue">X = {makeStep === 0 ? input || '？' : makeX || '？'}</div>
-          </div>
-          <div className={makeStep === 1 ? 'inputPreview stepCurrent' : 'inputPreview'} style={{ marginTop: 10 }}>
-            <div className="inputLabel">
-              ② 分解加数：{question.b} = X + Y {makeStep === 1 ? '（当前）' : ''}
+            <div className={makeStep === 1 ? 'inputPreview stepCurrent' : 'inputPreview'}>
+              <div className="inputLabel">
+                ② 分解加数：{question.b} = X + Y {makeStep === 1 ? '（当前）' : ''}
+              </div>
+              <div className="inputValue">Y = {makeStep === 1 ? input || '？' : makeY || '？'}</div>
             </div>
-            <div className="inputValue">Y = {makeStep === 1 ? input || '？' : makeY || '？'}</div>
-          </div>
-          <div className={makeStep === 2 ? 'inputPreview stepCurrent' : 'inputPreview'} style={{ marginTop: 10 }}>
-            <div className="inputLabel">
-              ③ 最终结果：{question.a} + {question.b} = ? {makeStep === 2 ? '（当前）' : ''}
+            <div className={makeStep === 2 ? 'inputPreview stepCurrent' : 'inputPreview'}>
+              <div className="inputLabel">
+                ③ 最终结果：{question.a} + {question.b} = ? {makeStep === 2 ? '（当前）' : ''}
+              </div>
+              <div className="inputValue">结果 = {makeStep === 2 ? input || '？' : makeResult || '？'}</div>
             </div>
-            <div className="inputValue">结果 = {makeStep === 2 ? input || '？' : makeResult || '？'}</div>
           </div>
         </div>
       )}
@@ -282,7 +284,7 @@ export function Practice(props: {
       </div>
 
       {question.strategy === 'estimate' && question.choices?.length === 3 ? (
-        <div className="stack" style={{ gap: 10 }}>
+        <div className="stack">
           {question.choices.map((c) => (
             <button
               key={c}
